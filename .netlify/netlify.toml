@@ -9,7 +9,6 @@ redirects = []
 [build]
 publish = "/Users/clawdcode/.openclaw/workspace/para/1-projects/family-book/site"
 publishOrigin = "default"
-base = "/Users/clawdcode/.openclaw/workspace/para/1-projects/family-book/site"
 
 [build.environment]
 

@@ -147,6 +147,16 @@
     .final-cta .subtext { color: rgba(255,255,255,.7); }
     .final-cta .success-msg { color: var(--sun); }
 
+    .book-toggle { display: flex; gap: 0; margin-bottom: 1.2rem; border-radius: 50px; overflow: hidden; border: 2px solid var(--coral); }
+    .book-toggle label {
+      flex: 1; padding: .7rem 1rem; text-align: center; cursor: pointer;
+      font-size: .95rem; font-weight: 600; transition: all .2s; color: var(--coral);
+      background: #fff; user-select: none;
+    }
+    .book-toggle input { display: none; }
+    .book-toggle input:checked + label { background: var(--coral); color: #fff; }
+    .toggle-label { font-size: .9rem; font-weight: 600; color: var(--text); margin-bottom: .5rem; }
+
     footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: .85rem; }
 
     @media (max-width: 768px) {
@@ -172,6 +182,13 @@
       <h1>A printed picture book of <em>your whole family</em></h1>
       <p>Upload photos and names of everyone in your family. We print a beautiful hardcover picture book and ship it to your door. The perfect keepsake for kids who are learning their family.</p>
       <form class="hero-cta" id="waitlist" onsubmit="return handleSubmit(event, this)">
+        <p class="toggle-label">I'd love a...</p>
+        <div class="book-toggle">
+          <input type="radio" name="book_type" id="type-picture" value="picture-book" checked>
+          <label for="type-picture">Picture book of my family</label>
+          <input type="radio" name="book_type" id="type-story" value="storybook">
+          <label for="type-story">Storybook starring my kid</label>
+        </div>
         <input type="email" name="email" placeholder="Enter your email" required>
         <button type="submit" class="btn">Join the Waitlist</button>
         <p class="subtext">Be first in line when we launch. No spam, ever.</p>
@@ -279,6 +296,7 @@
       e.preventDefault();
       const email = form.email.value.trim();
       if (!email) return false;
+      const bookType = form.book_type ? (form.querySelector('input[name="book_type"]:checked')?.value || 'picture-book') : 'picture-book';
 
       const btn = form.querySelector('.btn');
       btn.disabled = true;
@@ -293,7 +311,7 @@
             'Content-Type': 'application/json',
             'Prefer': 'return=minimal'
           },
-          body: JSON.stringify({ email, source: 'family-book', source_detail: 'landing-page', tags: ['waitlist'] })
+          body: JSON.stringify({ email, source: 'family-book', source_detail: 'landing-page-' + bookType, tags: ['waitlist', bookType] })
         });
 
         if (res.ok) {
