@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Book - A Picture Book of Your Whole Family</title>
+  <meta name="description" content="Create a custom printed picture book with photos and names of your whole family. The perfect keepsake for kids, grandparents, and newborns.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --warm-cream: #FFF8F0;
+      --soft-peach: #FFE8D6;
+      --coral: #FF6B6B;
+      --coral-dark: #E85555;
+      --forest: #2D6A4F;
+      --forest-light: #40916C;
+      --sky: #90C2E7;
+      --sun: #FFD166;
+      --text: #2B2B2B;
+      --text-light: #5A5A5A;
+      --purple: #A78BFA;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--warm-cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 { font-family: 'Fredoka', sans-serif; }
+
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2rem; max-width: 1200px; margin: 0 auto;
+    }
+    .logo { font-family: 'Fredoka', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--coral); }
+    .logo span { color: var(--forest); }
+    nav a { color: var(--coral); font-weight: 700; text-decoration: none; padding: .6rem 1.4rem; border: 2px solid var(--coral); border-radius: 50px; transition: all .2s; }
+    nav a:hover { background: var(--coral); color: #fff; }
+
+    .hero {
+      max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 2rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    .hero h1 { font-size: 3.2rem; line-height: 1.15; color: var(--text); }
+    .hero h1 em { font-style: normal; color: var(--coral); }
+    .hero p { font-size: 1.2rem; color: var(--text-light); margin: 1.2rem 0 1.8rem; line-height: 1.7; }
+    .price-tag {
+      display: inline-block; background: var(--sun); color: var(--text); font-family: 'Fredoka'; font-size: 1.1rem;
+      padding: .4rem 1rem; border-radius: 50px; margin-bottom: 1.5rem; font-weight: 600;
+    }
+    .hero-cta { display: flex; gap: .8rem; flex-wrap: wrap; }
+    .hero-cta input {
+      padding: .8rem 1.2rem; border: 2px solid #ddd; border-radius: 50px; font-size: 1rem;
+      width: 260px; font-family: 'Nunito'; outline: none; transition: border .2s;
+    }
+    .hero-cta input:focus { border-color: var(--coral); }
+    .btn {
+      padding: .8rem 2rem; background: var(--coral); color: #fff; border: none; border-radius: 50px;
+      font-size: 1rem; font-weight: 700; cursor: pointer; font-family: 'Nunito'; transition: all .2s;
+    }
+    .btn:hover { background: var(--coral-dark); transform: translateY(-1px); }
+    .btn:disabled { opacity: .6; cursor: not-allowed; }
+    .hero-cta .subtext { width: 100%; font-size: .85rem; color: var(--text-light); margin-top: .3rem; }
+    .success-msg { color: var(--forest); font-weight: 600; display: none; }
+
+    .hero-visual {
+      position: relative; display: flex; justify-content: center; align-items: center;
+    }
+    .book-mockup {
+      width: 100%; max-width: 480px; border-radius: 16px;
+      background: linear-gradient(135deg, var(--soft-peach), var(--sky));
+      aspect-ratio: 4/3; display: flex; flex-direction: column; justify-content: center; align-items: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.12); position: relative; overflow: hidden;
+    }
+    .book-mockup::before {
+      content: ''; position: absolute; top: 0; left: 50%; width: 3px; height: 100%;
+      background: rgba(0,0,0,.08); transform: translateX(-50%);
+    }
+    .book-mockup .book-title {
+      font-family: 'Fredoka'; font-size: 1.8rem; color: var(--text); text-align: center; z-index: 1;
+    }
+    .book-mockup .book-subtitle {
+      font-size: 1rem; color: var(--text-light); margin-top: .5rem; z-index: 1;
+    }
+
+    .floating-badge {
+      position: absolute; background: #fff; border-radius: 12px; padding: .6rem 1rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,.1); font-size: .85rem; font-weight: 600;
+      animation: float 3s ease-in-out infinite;
+    }
+    .badge-1 { top: -10px; right: -10px; }
+    .badge-2 { bottom: 10px; left: -10px; animation-delay: 1.5s; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+    .how-it-works {
+      max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; text-align: center;
+    }
+    .how-it-works h2 { font-size: 2.4rem; margin-bottom: .5rem; }
+    .subtitle { color: var(--text-light); font-size: 1.1rem; margin-bottom: 2.5rem; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .step {
+      background: #fff; padding: 2rem; border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.06); transition: transform .2s;
+    }
+    .step:hover { transform: translateY(-4px); }
+    .step-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .step h3 { font-size: 1.3rem; margin-bottom: .5rem; }
+    .step p { color: var(--text-light); line-height: 1.6; }
+
+    .who-its-for {
+      max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; text-align: center;
+    }
+    .who-its-for h2 { font-size: 2.4rem; margin-bottom: .5rem; }
+    .use-cases { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 800px; margin: 0 auto; }
+    .use-case {
+      background: #fff; padding: 1.5rem; border-radius: 12px; text-align: left;
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    }
+    .use-case h3 { font-size: 1.1rem; margin-bottom: .4rem; color: var(--coral); }
+    .use-case p { color: var(--text-light); line-height: 1.5; font-size: .95rem; }
+
+    .social-proof {
+      background: var(--soft-peach); padding: 4rem 2rem; text-align: center;
+    }
+    .social-proof h2 { font-size: 2.4rem; margin-bottom: 2rem; }
+    .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+    .review {
+      background: #fff; padding: 1.5rem; border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    }
+    .review-stars { color: var(--sun); font-size: 1.2rem; margin-bottom: .5rem; }
+    .review p { color: var(--text-light); line-height: 1.6; font-style: italic; }
+    .review-author { margin-top: .8rem; font-weight: 600; font-size: .9rem; }
+
+    .final-cta {
+      max-width: 700px; margin: 3rem auto; text-align: center;
+      background: var(--forest); color: #fff; padding: 3rem 2rem; border-radius: 20px;
+    }
+    .final-cta h2 { color: #fff; font-size: 2rem; margin-bottom: .8rem; }
+    .final-cta p { color: rgba(255,255,255,.85); margin-bottom: 1.5rem; }
+    .final-cta .hero-cta { justify-content: center; }
+    .final-cta .subtext { color: rgba(255,255,255,.7); }
+    .final-cta .success-msg { color: var(--sun); }
+
+    footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: .85rem; }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+      .hero h1 { font-size: 2.2rem; }
+      .steps { grid-template-columns: 1fr; }
+      .reviews { grid-template-columns: 1fr; }
+      .use-cases { grid-template-columns: 1fr; }
+      .hero-cta input { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Family<span>Book</span></div>
+    <a href="#waitlist">Join the Waitlist</a>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <div class="price-tag">Starting at $34.99</div>
+      <h1>A printed picture book of <em>your whole family</em></h1>
+      <p>Upload photos and names of everyone in your family. We print a beautiful hardcover picture book and ship it to your door. The perfect keepsake for kids who are learning their family.</p>
+      <form class="hero-cta" id="waitlist" onsubmit="return handleSubmit(event, this)">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit" class="btn">Join the Waitlist</button>
+        <p class="subtext">Be first in line when we launch. No spam, ever.</p>
+        <p class="success-msg">You're on the list! We'll be in touch soon.</p>
+      </form>
+    </div>
+    <div class="hero-visual">
+      <div class="book-mockup">
+        <div class="book-title">The Jafri Family</div>
+        <div class="book-subtitle">A Picture Book</div>
+      </div>
+      <div class="floating-badge badge-1">Hardcover</div>
+      <div class="floating-badge badge-2">24 Pages</div>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <h2>How It Works</h2>
+    <p class="subtitle">Three steps to your family's picture book</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">1</div>
+        <h3>Upload Photos and Names</h3>
+        <p>Add a photo and name for each family member. Mom, Dad, Grandma, the cousins, even the dog.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">2</div>
+        <h3>We Design Your Book</h3>
+        <p>Each page features a family member with their photo and name. Clean, beautiful layouts designed for little hands.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">3</div>
+        <h3>Printed and Shipped</h3>
+        <p>A hardcover picture book arrives at your door. Thick pages, vibrant colors, built to last.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="who-its-for">
+    <h2>Who It's For</h2>
+    <p class="subtitle">The gift that never gets old</p>
+    <div class="use-cases">
+      <div class="use-case">
+        <h3>For Grandparents</h3>
+        <p>Give your grandchild a book with every family member's face and name. They'll flip through it over and over.</p>
+      </div>
+      <div class="use-case">
+        <h3>For New Parents</h3>
+        <p>Welcome a newborn with a picture book of the family they're joining. A keepsake from day one.</p>
+      </div>
+      <div class="use-case">
+        <h3>For Aunts and Uncles</h3>
+        <p>Better than another toy they'll forget in a week. A book with their face in it? They'll remember that.</p>
+      </div>
+      <div class="use-case">
+        <h3>For Birthdays</h3>
+        <p>The birthday gift that makes other parents ask "where did you get that?"</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="social-proof">
+    <h2>Families Love It</h2>
+    <div class="reviews">
+      <div class="review">
+        <div class="review-stars">*****</div>
+        <p>"My daughter points at every page and says the names. She carries it everywhere."</p>
+        <div class="review-author">-- Sarah M., mom of 2</div>
+      </div>
+      <div class="review">
+        <div class="review-stars">*****</div>
+        <p>"Bought this for my grandkids. They call it 'our book' and won't let it go."</p>
+        <div class="review-author">-- Robert K., grandfather</div>
+      </div>
+      <div class="review">
+        <div class="review-stars">*****</div>
+        <p>"The quality is amazing. Hardcover, thick pages, and my nephew's face lit up when he saw himself."</p>
+        <div class="review-author">-- Priya D., aunt</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 0 2rem;">
+    <div class="final-cta">
+      <h2>Your Family Belongs in a Book</h2>
+      <p>Join the waitlist and be the first to create your family's picture book.</p>
+      <form class="hero-cta" onsubmit="return handleSubmit(event, this)">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit" class="btn">Join the Waitlist</button>
+        <p class="subtext">Launching soon.</p>
+        <p class="success-msg">You're on the list! We'll be in touch soon.</p>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>2026 FamilyBook. Made for families everywhere.</p>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://ywswccgxwbzgisvdpcou.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_NFpSgF4-O6bYLEJcWdNQzg_-_wvagjm';
+
+    async function handleSubmit(e, form) {
+      e.preventDefault();
+      const email = form.email.value.trim();
+      if (!email) return false;
+
+      const btn = form.querySelector('.btn');
+      btn.disabled = true;
+      btn.textContent = 'Joining...';
+
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/email_list`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ email, source: 'family-book', source_detail: 'landing-page', tags: ['waitlist'] })
+        });
+
+        if (res.ok) {
+          form.querySelector('.success-msg').style.display = 'block';
+          form.querySelector('.subtext').style.display = 'none';
+          form.email.style.display = 'none';
+          btn.style.display = 'none';
+        } else {
+          const data = await res.json();
+          if (data?.message?.includes('duplicate') || data?.code === '23505') {
+            form.querySelector('.success-msg').textContent = "You're already on the list!";
+            form.querySelector('.success-msg').style.display = 'block';
+            form.querySelector('.subtext').style.display = 'none';
+            form.email.style.display = 'none';
+            btn.style.display = 'none';
+          } else {
+            throw new Error(data?.message || 'Something went wrong');
+          }
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Join the Waitlist';
+        alert('Something went wrong. Please try again.');
+        console.error(err);
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>

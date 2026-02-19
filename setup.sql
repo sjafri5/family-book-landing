@@ -1,0 +1,3 @@
+-- Family Book now uses the unified email_list table.
+-- See: para/1-projects/mission-control/supabase/migrations/004_unified_email_list.sql
+-- Run THAT migration instead of this file.
